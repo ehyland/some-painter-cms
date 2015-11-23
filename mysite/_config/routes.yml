@@ -1,0 +1,7 @@
+---
+Name: routes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'api/v1/events': 'JSONController'

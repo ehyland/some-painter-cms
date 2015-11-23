@@ -1,0 +1,24 @@
+assets/*
+!assets/.htaccess
+
+# Misc
+tools/phing-metadata
+silverstripe-cache
+.buildpath
+.project
+.settings
+.idea
+.DS_Store
+composer.lock
+/*.log
+/*.zip
+
+# Modules
+cms/
+framework/
+vendor/
+node_modules/
+
+# Sensitive Files
+_ss_environment.php
+mysite/_config/keys.yml

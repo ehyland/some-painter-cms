@@ -1,0 +1,44 @@
+---
+Name: mysite
+After:
+  - 'framework/*'
+  - 'cms/*'
+---
+
+SSViewer:
+  theme: 'openings'
+
+Date:
+  extensions:
+    - DateExtension
+
+DataObject:
+  extensions:
+    - DataObjectExtension_APIFields
+
+Event:
+  summary_fields:
+    'Title': 'Title'
+    'Gallery.Title': 'Gallery'
+    'StartDate.Nice': 'Start'
+
+Gallery:
+  summary_fields:
+    'Title': 'Title'
+    'Events.Count': 'Events'
+    'Location.FormattedAddress': 'Address'
+    'Location.City': 'Suburb'
+    'Location.PostalCode': 'PostalCode'
+
+Location:
+  summary_fields:
+    'StreetNumber': 'StreetNumber'
+    'Route': 'Route'
+    'City': 'City'
+    'State': 'State'
+    'Country': 'Country'
+    'PostalCode': 'PostalCode'
+    'Latitude': 'Latitude'
+    'Longitude': 'Longitude'
+    'PlaceID': 'PlaceID'
+    'PartialMatch': 'PartialMatch'
