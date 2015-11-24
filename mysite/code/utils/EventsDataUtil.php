@@ -2,11 +2,7 @@
 
 class EventsDataUtil extends Object{
 
-    public static function get_events_data_for_day(SS_Datetime $date = null) {
-        if (!is_a($date, 'SS_Datetime')) {
-            $date = SS_Datetime::now();
-        }
-
+    public static function get_events_data_for_day(SS_Datetime $date) {
         return self::generate_data_for_day($date);
     }
 

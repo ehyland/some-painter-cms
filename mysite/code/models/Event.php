@@ -46,6 +46,14 @@ class Event extends DataObject{
   }
 
   public function forAPI(){
-    return $this->getBaseAPIFields();
+    return $this->getBaseAPIFields(array(
+        'ClassName',
+        'GCal_etag',
+        'GCal_id',
+        'GCal_htmlLink',
+        'GCal_updated',
+        'GCal_summary',
+        'GCal_location',
+    ));
   }
 }
