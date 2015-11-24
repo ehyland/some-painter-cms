@@ -16,6 +16,8 @@ composer.lock
 # Modules
 cms/
 framework/
+reports/
+siteconfig/
 vendor/
 node_modules/
 

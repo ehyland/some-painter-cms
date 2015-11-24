@@ -6,9 +6,9 @@
 # If you are using IIS then you should look at assets/web.config instead.
 #
 # To add an extension to the list, you need to put another string of the form "ext|" on the
-# FilesMatch line, inside the parentheses. 
+# FilesMatch line, inside the parentheses.
 #
-# For example, to add *.exe files to list of downloadable assets, change this line: 
+# For example, to add *.exe files to list of downloadable assets, change this line:
 #
 #   <FilesMatch "\.(?i:html|htm|xhtml...
 #
