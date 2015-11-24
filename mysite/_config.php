@@ -4,7 +4,7 @@ global $project;
 $project = 'mysite';
 
 global $database;
-$database = 'some_painter_cms';
+$database = 'somepainter';
 
 require_once('conf/ConfigureFromEnv.php');
 
