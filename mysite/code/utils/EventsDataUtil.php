@@ -9,7 +9,7 @@ class EventsDataUtil extends Object{
     private static function generate_data_for_day(SS_Datetime $date){
         $data = array(
             'timestamp' => time(),
-            'items' => array(
+            'collections' => array(
                 'events' => array(),
                 'galleries' => array()
             )
