@@ -22,14 +22,14 @@ class EventsDataUtil extends Object{
         $events = Event::get()->where("DATE(`StartDate`) = '$dateString'");
         foreach ($events as $event) {
             $galleryIDs[] = $event->GalleryID;
-            $data['items']['events'][] = $event->forAPI();
+            $data['collections']['events'][] = $event->forAPI();
         }
 
         // Get galleries
         $galleryIDs = array_unique($galleryIDs);
         $galleries = Gallery::get()->byIDs($galleryIDs);
         foreach ($galleries as $gallery) {
-            $data['items']['galleries'][] = $gallery->forAPI();
+            $data['collections']['galleries'][] = $gallery->forAPI();
         }
 
         return $data;
