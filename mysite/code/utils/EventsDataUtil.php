@@ -7,8 +7,12 @@ class EventsDataUtil extends Object{
     }
 
     private static function generate_data_for_day(SS_Datetime $date){
+        // Normalize time
+        $date = SS_Datetime::create_field('SS_Datetime', $date->Format('Y-m-d'));
+
         $data = array(
             'timestamp' => time(),
+            'searchData' => $date->Rfc3339(),
             'collections' => array(
                 'events' => array(),
                 'galleries' => array()
@@ -18,9 +22,8 @@ class EventsDataUtil extends Object{
         $galleryIDs = array();
 
         // Get events
-        $dateString = $date->Format('Y-m-d');
-        $events = Event::get()->where("DATE(`StartDate`) = '$dateString'");
-        foreach ($events as $event) {
+        $where =  sprintf("DATE(`StartDate`) = '%s'", $date->Format('Y-m-d'));
+        foreach (Event::get()->where($where) as $event) {
             $galleryIDs[] = $event->GalleryID;
             $data['collections']['events'][] = $event->forAPI();
         }
