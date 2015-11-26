@@ -4,7 +4,7 @@ class Location extends DataObject{
     private static $db = array(
         'StreetNumber' => 'Varchar(255)',
         'Route' => 'Varchar(255)',
-        'City' => 'Varchar(255)',
+        'Suburb' => 'Varchar(255)',
         'State' => 'Varchar(255)',
         'Country' => 'Varchar(255)',
         'PostalCode' => 'Varchar(255)',
@@ -21,7 +21,7 @@ class Location extends DataObject{
     public static $address_components_map = array(
         'street_number' => 'StreetNumber',
         'route' => 'Route',
-        'locality' => 'City',
+        'locality' => 'Suburb',
         'administrative_area_level_1' => 'State',
         'country' => 'Country',
         'postal_code' => 'PostalCode'
@@ -78,7 +78,7 @@ class Location extends DataObject{
     }
 
     function getFormattedAddress(){
-        return "$this->StreetNumber $this->Route $this->City $this->State $this->Country $this->PostalCode";
+        return "$this->StreetNumber $this->Route $this->Suburb $this->State $this->Country $this->PostalCode";
     }
 
     public function forAPI(){

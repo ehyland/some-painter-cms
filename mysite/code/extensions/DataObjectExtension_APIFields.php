@@ -3,6 +3,7 @@ class DataObjectExtension_APIFields extends Extension{
     private static $bool_types = ['Boolean'];
     private static $int_types = ['Int'];
     private static $float_types = ['Float', 'Decimal', 'Double', 'ConfidenceRating'];
+    private static $date_types = ['SS_Datetime', 'Date'];
 
     public function getBaseAPIFields($exclude = array()){
         return array_merge(
@@ -42,6 +43,9 @@ class DataObjectExtension_APIFields extends Extension{
             }
             elseif (in_array($type, self::$float_types)) {
                 $data[$name] = floatval($obj->$name);
+            }
+            elseif (in_array($type, self::$date_types)) {
+                $data[$name] = $obj->obj($name)->Rfc3339();
             }
             else {
                 $data[$name] = $obj->$name;
