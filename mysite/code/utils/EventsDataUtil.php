@@ -9,10 +9,13 @@ class EventsDataUtil extends Object{
     private static function generate_data_for_day(SS_Datetime $date){
         // Normalize time
         $date = SS_Datetime::create_field('SS_Datetime', $date->Format('Y-m-d'));
+        $melbSearchDate = $date->Format('D j');
 
         $data = array(
             'timestamp' => time(),
             'searchData' => $date->Rfc3339(),
+            'melbSearchDate' => $melbSearchDate,
+            'melbTimezomeOffsetSeconds' => $date->Format('Z'),
             'collections' => array(
                 'events' => array(),
                 'galleries' => array()
