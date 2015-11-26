@@ -2,18 +2,21 @@
 
 class EventsDataUtil extends Object{
 
-    public static function get_events_data_for_day(SS_Datetime $date = null) {
-        if (!is_a($date, 'SS_Datetime')) {
-            $date = SS_Datetime::now();
-        }
-
+    public static function get_events_data_for_day(SS_Datetime $date) {
         return self::generate_data_for_day($date);
     }
 
     private static function generate_data_for_day(SS_Datetime $date){
+        // Normalize time
+        $date = SS_Datetime::create_field('SS_Datetime', $date->Format('Y-m-d'));
+        $melbSearchDate = $date->Format('D j');
+
         $data = array(
             'timestamp' => time(),
-            'items' => array(
+            'searchData' => $date->Rfc3339(),
+            'melbSearchDate' => $melbSearchDate,
+            'melbTimezomeOffsetSeconds' => $date->Format('Z'),
+            'collections' => array(
                 'events' => array(),
                 'galleries' => array()
             )
@@ -22,18 +25,17 @@ class EventsDataUtil extends Object{
         $galleryIDs = array();
 
         // Get events
-        $dateString = $date->Format('Y-m-d');
-        $events = Event::get()->where("DATE(`StartDate`) = '$dateString'");
-        foreach ($events as $event) {
+        $where =  sprintf("DATE(`StartDate`) = '%s'", $date->Format('Y-m-d'));
+        foreach (Event::get()->where($where) as $event) {
             $galleryIDs[] = $event->GalleryID;
-            $data['items']['events'][] = $event->forAPI();
+            $data['collections']['events'][] = $event->forAPI();
         }
 
         // Get galleries
         $galleryIDs = array_unique($galleryIDs);
         $galleries = Gallery::get()->byIDs($galleryIDs);
         foreach ($galleries as $gallery) {
-            $data['items']['galleries'][] = $gallery->forAPI();
+            $data['collections']['galleries'][] = $gallery->forAPI();
         }
 
         return $data;
