@@ -33,15 +33,10 @@ class Event extends DataObject{
     public function forAPI(){
         $data = $this->getBaseAPIFields(array(
             'ClassName',
-            'GoogleCalendarEvent',
-            'GCal_etag',
-            'GCal_id',
-            'GCal_htmlLink',
-            'GCal_updated',
-            'GCal_summary',
-            'GCal_location',
+            'GoogleCalendarEvent'
         ));
         $data['MelbStartTime'] = $this->obj('StartDate')->Format('gA');
+        $data['Date'] = $this->obj('StartDate')->Format('Y-m-d');
         return $data;
     }
 }
