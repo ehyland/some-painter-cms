@@ -83,7 +83,6 @@ class Location extends DataObject{
 
     public function forAPI(){
         return $this->getBaseAPIFields(array(
-            'ClassName',
             'LastEdited',
             'Created',
             'PlaceID',

@@ -36,14 +36,9 @@ class Gallery extends DataObject{
 
     public function forAPI(){
         $data = $this->getBaseAPIFields(array(
-            'ClassName',
             'Events',
             'LocationID'
         ));
-        $location = $this->Location();
-        if (is_object($location)) {
-            $data['Location'] = $location->forAPI();
-        }
         return $data;
     }
 }
