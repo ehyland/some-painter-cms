@@ -8,13 +8,17 @@ class JSONController extends Controller{
     );
 
     private static $url_handlers = array(
-        '' => 'getEventsAction'
+        '//$SearchDate' => 'getEventsAction'
     );
 
 
     public function getEventsAction(SS_HTTPRequest $request) {
+
         // Search date
-        $date = SS_Datetime::now();
+        $date = DBField::create_field("SS_Datetime", $request->param("SearchDate"));
+        if (!$date->getValue()) {
+            $date = SS_Datetime::now();
+        }
 
         // Check cache
         $cache = SS_Cache::factory(self::CACHE_NAME);
