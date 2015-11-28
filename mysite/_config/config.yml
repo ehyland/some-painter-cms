@@ -19,6 +19,7 @@ DataObject:
 Event:
   summary_fields:
     'Title': 'Title'
+    'ArtistName': 'Artist'
     'Gallery.Title': 'Gallery'
     'StartDate.Nice': 'Start'
 
