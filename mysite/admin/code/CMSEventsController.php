@@ -1,8 +1,8 @@
 <?php
 
 class CMSEventsController extends LeftAndMain {
-  private static $url_segment = 'events';
-  private static $menu_title = 'Events';
+  private static $url_segment = 'events-week-view';
+  private static $menu_title = 'Next 7 days';
   private static $tree_class = 'Event';
 
   public function getEditForm($id = null, $fields = null) {
@@ -21,9 +21,6 @@ class CMSEventsController extends LeftAndMain {
     );
 
     $root->push($this->createNext7DaysTab());
-    $root->push($this->createEventsTab());
-    $root->push($this->createGalleriesTab());
-    $root->push($this->createLocationsTab());
   }
 
   public function createNext7DaysTab(){
@@ -79,81 +76,5 @@ class CMSEventsController extends LeftAndMain {
       'Fields' => $fields,
       'TabTitle' => $tabTitle
     );
-  }
-
-  public function createEventsTab(){
-    $today = date('Y-m-d');
-
-    $futureEvents = Event::get()->where("Date(StartDate) >= '$today'");
-    $futureEventsGrid = GridField::create(
-      'FutureEventsGrid',
-      'Future Events',
-      $futureEvents,
-      GridFieldConfig_RecordEditor::create()
-        ->removeComponentsByType('GridFieldPageCount')
-        ->removeComponentsByType('GridFieldAddNewButton')
-        ->addComponent(new GridFieldAddNewButton('toolbar-header-right'))
-    );
-
-    $pastEvents = Event::get()->where("Date(StartDate) < '$today'");
-    $pastEventsGrid = GridField::create(
-      'PastEventsGrid',
-      'Past Events',
-      $pastEvents,
-      GridFieldConfig_RecordEditor::create()
-        ->removeComponentsByType('GridFieldPageCount')
-        ->removeComponentsByType('GridFieldAddNewButton')
-    );
-
-    $tab = Tab::create('Events',
-      TabSet::create('EventsTabSet',
-        $futureTab = Tab::create(
-          'Events_Future_Tab',
-          "Future ({$futureEvents->count()})",
-          $futureEventsGrid
-        ),
-        $pastTab = Tab::create(
-          'Events_Past_Tab',
-          "Past ({$pastEvents->count()})",
-          $pastEventsGrid
-        )
-      )
-    );
-
-    return $tab;
-  }
-
-  public function createGalleriesTab(){
-
-    $galleries = Gallery::get();
-    $galleriesGrid = GridField::create(
-      'GalleriesGrid',
-      'Galleries',
-      $galleries,
-      GridFieldConfig_RecordEditor::create()
-        ->removeComponentsByType('GridFieldPageCount')
-        ->removeComponentsByType('GridFieldAddNewButton')
-    );
-
-    $tab = Tab::create('Galleries', $galleriesGrid);
-
-    return $tab;
-  }
-
-  public function createLocationsTab(){
-
-    $locations = Location::get();
-    $locationsGrid = GridField::create(
-      'LocationsGrid',
-      'Locations',
-      $locations,
-      GridFieldConfig_RecordEditor::create()
-        ->removeComponentsByType('GridFieldPageCount')
-        ->removeComponentsByType('GridFieldAddNewButton')
-    );
-
-    $tab = Tab::create('Locations', $locationsGrid);
-
-    return $tab;
   }
 }

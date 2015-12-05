@@ -1,34 +1,50 @@
 <?php
 class Event extends DataObject{
 
-  private static $db = array(
-    'Title' => 'Varchar(255)',
-    'ArtistName' => 'Varchar(255)',
-    'StartDate' => 'SS_Datetime',
-    'EndDate' => 'SS_Datetime'
-  );
+    const EDIT_URL_SEGMENT = 'cms/admin/data/Event/EditForm/field/Event/item/{}/edit';
 
-  private static $has_one = array(
-    'Gallery' => 'Gallery',
-    'GoogleCalendarEvent' => 'GoogleCalendarEvent'
-  );
+    private static $db = array(
+        'Title' => 'Varchar(255)',
+        'ArtistName' => 'Varchar(255)',
+        'StartDate' => 'SS_Datetime',
+        'EndDate' => 'SS_Datetime'
+    );
 
-  public static function create_or_update_with_calendar_data($data){
+    private static $has_one = array(
+        'Gallery' => 'Gallery',
+        'GoogleCalendarEvent' => 'GoogleCalendarEvent'
+    );
 
-    // Build update map
-    $update = $data['derived'];
-    $update['GoogleCalendarEventID'] = $data['GoogleCalendarEventID'];
-    $update['Title'] = $data['calendar']['summary'];
+    public function getCMSFields() {
+        $fields = parent::getCMSFields();
 
-    // Get or create event
-    $filter = array('GoogleCalendarEventID' => $data['GoogleCalendarEventID']);
-    if (!$event = self::get()->filter($filter)->first()) {
-        $event = self::create();
+        $fields->removeByName('GoogleCalendarEventID');
+
+        // Add edit gallery link
+        if ($this->GalleryID) {
+            $fields->dataFieldByName('GalleryID')
+                ->setDescription($this->Gallery()->getDataAdminEditAnchorTag());
+        }
+
+        return $fields;
     }
 
-    // Update event
-    return $event->update($update)->write();
-  }
+    public static function create_or_update_with_calendar_data($data){
+
+        // Build update map
+        $update = $data['derived'];
+        $update['GoogleCalendarEventID'] = $data['GoogleCalendarEventID'];
+        $update['Title'] = $data['calendar']['summary'];
+
+        // Get or create event
+        $filter = array('GoogleCalendarEventID' => $data['GoogleCalendarEventID']);
+        if (!$event = self::get()->filter($filter)->first()) {
+            $event = self::create();
+        }
+
+        // Update event
+        return $event->update($update)->write();
+    }
 
     public function forAPI(){
         $data = $this->getBaseAPIFields(array(
