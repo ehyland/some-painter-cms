@@ -43,3 +43,11 @@ Location:
     'Longitude': 'Longitude'
     'PlaceID': 'PlaceID'
     'PartialMatch': 'PartialMatch'
+
+GoogleCalendarEvent:
+  summary_fields:
+    'google_calendar_id': 'google_calendar_id'
+    'updated': 'updated'
+    'summary': 'summary'
+    'start_dateTime': 'start_dateTime'
+    'end_dateTime': 'end_dateTime'
