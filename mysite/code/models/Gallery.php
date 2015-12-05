@@ -2,7 +2,8 @@
 class Gallery extends DataObject{
     private static $db = array(
         "Title" => "Varchar(255)",
-        "Subtitle" => "Varchar(255)"
+        "Subtitle" => "Varchar(255)",
+        "WebsiteURL" => "Varchar(255)"
     );
 
     private static $has_one = array(
