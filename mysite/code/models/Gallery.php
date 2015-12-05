@@ -13,6 +13,18 @@ class Gallery extends DataObject{
         "Events" => "Event.Gallery"
     );
 
+    public function getCMSFields() {
+        $fields = parent::getCMSFields();
+
+        // Add edit location link
+        if ($this->LocationID) {
+            $fields->dataFieldByName('LocationID')
+                ->setDescription($this->Location()->getDataAdminEditAnchorTag());
+        }
+
+        return $fields;
+    }
+
     public static function create_or_update_with_google_data($data){
         $locationID = $data['LocationID'];
 

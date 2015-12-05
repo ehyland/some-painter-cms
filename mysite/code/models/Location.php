@@ -18,6 +18,10 @@ class Location extends DataObject{
         'Gallery' => 'Gallery.Location'
     );
 
+    public function getTitle() {
+        return $this->getFormattedAddress();
+    }
+
     public static $address_components_map = array(
         'street_number' => 'StreetNumber',
         'route' => 'Route',

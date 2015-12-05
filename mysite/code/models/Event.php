@@ -1,6 +1,8 @@
 <?php
 class Event extends DataObject{
 
+    const EDIT_URL_SEGMENT = 'cms/admin/data/Event/EditForm/field/Event/item/{}/edit';
+
     private static $db = array(
         'Title' => 'Varchar(255)',
         'ArtistName' => 'Varchar(255)',
@@ -12,6 +14,20 @@ class Event extends DataObject{
         'Gallery' => 'Gallery',
         'GoogleCalendarEvent' => 'GoogleCalendarEvent'
     );
+
+    public function getCMSFields() {
+        $fields = parent::getCMSFields();
+
+        $fields->removeByName('GoogleCalendarEventID');
+
+        // Add edit gallery link
+        if ($this->GalleryID) {
+            $fields->dataFieldByName('GalleryID')
+                ->setDescription($this->Gallery()->getDataAdminEditAnchorTag());
+        }
+
+        return $fields;
+    }
 
     public static function create_or_update_with_calendar_data($data){
 

@@ -15,6 +15,7 @@ Date:
 DataObject:
   extensions:
     - DataObjectExtension_APIFields
+    - DataObjectExtension_DataAdmin
 
 Event:
   summary_fields:
