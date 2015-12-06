@@ -1,7 +1,8 @@
 <?php
 class JSONController extends Controller{
 
-    const CACHE_NAME = 'EVENT_DATA_CACHE';
+    const EVENTS_CACHE_NAME = 'EVENT_DATA_CACHE';
+    const CONFIG_CACHE_NAME = 'APP_CONFIG_DATA_CACHE';
 
     private static $allowed_actions = array(
         'getEventsAction'
@@ -21,7 +22,7 @@ class JSONController extends Controller{
         }
 
         // Get event data
-        $cache = SS_Cache::factory(self::CACHE_NAME);
+        $cache = SS_Cache::factory(self::EVENTS_CACHE_NAME);
         $cacheKey = $date->Format('Y_m_d');
         if ($result = $cache->load($cacheKey)) {
             $data = unserialize($result);
@@ -32,7 +33,15 @@ class JSONController extends Controller{
 
         // Get init data
         if ($request->param("GetAppConfig")) {
-            $data['appConfig'] = AppConfigDataUtil::get_config_data();
+            $cache = SS_Cache::factory(self::CONFIG_CACHE_NAME);
+            $cacheKey = 'APP_CONFIG';
+            if ($result = $cache->load($cacheKey)) {
+                $configData = unserialize($result);
+            }else{
+                $configData = AppConfigDataUtil::get_config_data();
+                $cache->save(serialize($configData), $cacheKey);
+            }
+            $data['appConfig'] = $configData;
         }
 
         $this->response->addHeader('Content-Type', 'application/json');

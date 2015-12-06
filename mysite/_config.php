@@ -30,4 +30,5 @@ CMSMenu::remove_menu_item('CMSSettingsController');
 $liveCacheLife = 60*60;  // 60 minutes
 $devCacheLife = -1; // disabled
 $cacheLife = Director::isDev() ? $devCacheLife : $liveCacheLife;
-SS_Cache::set_cache_lifetime(JSONController::CACHE_NAME, $cacheLife, 100);
+SS_Cache::set_cache_lifetime(JSONController::EVENTS_CACHE_NAME, $cacheLife, 100);
+SS_Cache::set_cache_lifetime(JSONController::CONFIG_CACHE_NAME, $cacheLife, 100);
