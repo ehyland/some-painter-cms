@@ -6,7 +6,7 @@ class AppConfig extends DataObject {
         'DefaultMetaDescription' => 'Text',
         'DefaultMetaKeywords' => 'Text',    // Comma separated list of keywords
 
-        'NoEventsText' => 'Text',   // Line separated list of messages
+        'NoEventsMessages' => 'Text',   // Line separated list of messages
         'NoEventsFormURL' => 'Varchar(255)'
     );
 
@@ -16,7 +16,7 @@ class AppConfig extends DataObject {
         'DefaultMetaDescription' => 'Art gallery openings, exhibitions and special events on in Melbourne tonight.',
         'DefaultSiteTitle' => 'Somepainter - Art gallery openings in Melbourne tonight',
 
-        'NoEventsText' => "Hmmm.. looks like there's nothing on tonight. Maybe tomorrow?\nShit! Nothing on tonight either. How about the next day?\nOh! Nothing here. Try the day after?\nSorry. There's nothing happening. To help us improve can you answer this one question?",
+        'NoEventsMessages' => "Hmmm.. looks like there's nothing on tonight. Maybe tomorrow?\nShit! Nothing on tonight either. How about the next day?\nOh! Nothing here. Try the day after?\nSorry. There's nothing happening. To help us improve can you answer this one question?",
         'NoEventsFormURL' => 'https://docs.google.com/forms/d/1ynqtBbWCiq0SAC_cQk1wpmg2v3tu3pdys25ACxMy0eI/'
     );
 
@@ -27,7 +27,7 @@ class AppConfig extends DataObject {
             TextField::create('DefaultSiteTitle'),
             TextField::create('DefaultMetaDescription'),
             TextField::create('DefaultMetaKeywords')->setDescription('Comma separated list of keywords'),
-            TextareaField::create('NoEventsText')
+            TextareaField::create('NoEventsMessages')
                 ->setDescription('Line separated list of messages. l1=tonights, l2=tomorrow, l3=nextDay, l4=dayAfter'),
             TextField::create('NoEventsFormURL')->setDescription('Link to external form')
         ));
