@@ -18,6 +18,7 @@ cms/
 framework/
 reports/
 siteconfig/
+silverstripe-singleobjectadmin/
 vendor/
 node_modules/
 
