@@ -8,7 +8,7 @@ class JSONController extends Controller{
     );
 
     private static $url_handlers = array(
-        '//$SearchDate' => 'getEventsAction'
+        '//$SearchDate/$GetAppConfig' => 'getEventsAction'
     );
 
 
@@ -20,7 +20,7 @@ class JSONController extends Controller{
             $date = SS_Datetime::now();
         }
 
-        // Check cache
+        // Get event data
         $cache = SS_Cache::factory(self::CACHE_NAME);
         $cacheKey = $date->Format('Y_m_d');
         if ($result = $cache->load($cacheKey)) {
@@ -28,6 +28,11 @@ class JSONController extends Controller{
         }else{
             $data = EventsDataUtil::get_events_data_for_day($date);
             $cache->save(serialize($data), $cacheKey);
+        }
+
+        // Get init data
+        if ($request->param("GetAppConfig")) {
+            $data['appConfig'] = AppConfigDataUtil::get_config_data();
         }
 
         $this->response->addHeader('Content-Type', 'application/json');

@@ -19,6 +19,13 @@ if(defined('MY_SS_ERROR_LOG')) {
   SS_Log::add_writer(new SS_LogFileWriter(MY_SS_ERROR_LOG), SS_Log::NOTICE, '<=');
 }
 
+// Configure Admin
+CMSMenu::remove_menu_item('ReportAdmin');
+CMSMenu::remove_menu_item('CMSPagesController');
+CMSMenu::remove_menu_item('AssetAdmin');
+CMSMenu::remove_menu_item('SecurityAdmin');
+CMSMenu::remove_menu_item('CMSSettingsController');
+
 // Configure cache
 $liveCacheLife = 60*60;  // 60 minutes
 $devCacheLife = -1; // disabled
