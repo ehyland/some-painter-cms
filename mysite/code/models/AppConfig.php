@@ -22,10 +22,12 @@ class AppConfig extends DataObject {
         'Default_OG_Locale' => 'Varchar(255)',
 
         // Image
-        'Default_OG_Image' => 'Varchar(255)',
-        'Default_OG_Image_type' => 'Varchar(255)',
         'Default_OG_Image_width' => 'Varchar(255)',
         'Default_OG_Image_height' => 'Varchar(255)'
+    );
+
+    private static $has_one = array(
+        "Default_OG_Image" => "Image"
     );
 
     private static $defaults = array(
@@ -41,12 +43,14 @@ class AppConfig extends DataObject {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
+        // General Setting
         $fields->addFieldsToTab('Root.Main', array(
             TextField::create('DefaultSiteTitle'),
             TextField::create('DefaultMetaDescription'),
             TextField::create('DefaultMetaKeywords')->setDescription('Comma separated list of keywords'),
         ));
 
+        // OG Setting
         foreach (self::$db as $key => $type) {
             if (strpos($key, 'Default_OG_') !== 0)
                 continue;
@@ -56,8 +60,11 @@ class AppConfig extends DataObject {
 
             $fields->addFieldToTab('Root.FacebookOG', TextField::create($key, $ogTitle));
         }
+        $fields->addFieldToTab('Root.FacebookOG',
+            UploadField::create('Default_OG_Image', 'Share Image')->setAllowedMaxFileNumber(1)
+        );
 
-
+        // No Events Display Settings
         $fields->addFieldsToTab('Root.NoEventsCopy', array(
             TextareaField::create('NoEventsMessages')
                 ->setDescription('Line separated list of messages. l1=tonights, l2=tomorrow, l3=nextDay, l4=dayAfter'),
