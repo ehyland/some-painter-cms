@@ -7,7 +7,25 @@ class AppConfig extends DataObject {
         'DefaultMetaKeywords' => 'Text',    // Comma separated list of keywords
 
         'NoEventsMessages' => 'Text',   // Line separated list of messages
-        'NoEventsFormURL' => 'Varchar(255)'
+        'NoEventsFormURL' => 'Varchar(255)',
+
+        // Facebook Open Graph
+        // https://developers.facebook.com/docs/sharing/opengraph/object-properties
+
+        // Basic
+        'Default_OG_Title' => 'Varchar(255)',
+        'Default_OG_Description' => 'Varchar(255)',
+        'Default_OG_Site_name' => 'Varchar(255)',
+
+        // Other
+        'Default_OG_Type' => 'Varchar(255)',
+        'Default_OG_Locale' => 'Varchar(255)',
+
+        // Image
+        'Default_OG_Image' => 'Varchar(255)',
+        'Default_OG_Image_type' => 'Varchar(255)',
+        'Default_OG_Image_width' => 'Varchar(255)',
+        'Default_OG_Image_height' => 'Varchar(255)'
     );
 
     private static $defaults = array(
@@ -27,6 +45,20 @@ class AppConfig extends DataObject {
             TextField::create('DefaultSiteTitle'),
             TextField::create('DefaultMetaDescription'),
             TextField::create('DefaultMetaKeywords')->setDescription('Comma separated list of keywords'),
+        ));
+
+        foreach (self::$db as $key => $type) {
+            if (strpos($key, 'Default_OG_') !== 0)
+                continue;
+            $ogTitle = substr($key, strlen('Default_'));
+            $ogTitle = str_replace('_', ':', $ogTitle);
+            $ogTitle = strtolower($ogTitle);
+
+            $fields->addFieldToTab('Root.FacebookOG', TextField::create($key, $ogTitle));
+        }
+
+
+        $fields->addFieldsToTab('Root.NoEventsCopy', array(
             TextareaField::create('NoEventsMessages')
                 ->setDescription('Line separated list of messages. l1=tonights, l2=tomorrow, l3=nextDay, l4=dayAfter'),
             TextField::create('NoEventsFormURL')->setDescription('Link to external form')
