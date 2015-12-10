@@ -26,7 +26,7 @@ class AppConfig extends DataObject {
     );
 
     private static $has_one = array(
-        "Default_OG_Image" => "Image"
+        "OpenGraphDefaultImage" => "Image"
     );
 
     private static $defaults = array(
@@ -66,7 +66,7 @@ class AppConfig extends DataObject {
             $fields->addFieldToTab('Root.FacebookOG', TextField::create($key, $ogTitle));
         }
         $fields->addFieldToTab('Root.FacebookOG',
-            UploadField::create('Default_OG_Image', 'Share Image')->setAllowedMaxFileNumber(1)
+            UploadField::create('OpenGraphDefaultImage', 'Share Image')->setAllowedMaxFileNumber(1)
         );
 
         // No Events Display Settings
@@ -93,7 +93,7 @@ class AppConfig extends DataObject {
             'Created'
         ]);
 
-        $data['Default_OG_ImageURL'] = $this->Default_OG_Image()->CroppedImage(
+        $data['Default_OG_Image'] = $this->OpenGraphDefaultImage()->CroppedImage(
             $this->Default_OG_Image_width,
             $this->Default_OG_Image_height
         )->getAbsoluteURL();
