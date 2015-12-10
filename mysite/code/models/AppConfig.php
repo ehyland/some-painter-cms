@@ -17,8 +17,8 @@ class AppConfig extends DataObject {
         'Default_OG_Site_name' => 'Varchar(255)',
         'Default_OG_Type' => 'Varchar(255)',
         'Default_OG_Locale' => 'Varchar(255)',
-        // 'Default_OG_Image_width' => 'Varchar(255)',
-        // 'Default_OG_Image_height' => 'Varchar(255)',
+        'Default_OG_Image_width' => 'Int',
+        'Default_OG_Image_height' => 'Int',
 
         // Thank You Messages
         'ThankYou_Facebook_Share' => 'Varchar(255)',
@@ -36,7 +36,10 @@ class AppConfig extends DataObject {
         'DefaultSiteTitle' => 'Somepainter - Art gallery openings in Melbourne tonight',
 
         'NoEventsMessages' => "Hmmm.. looks like there's nothing on tonight. Maybe tomorrow?\nShit! Nothing on tonight either. How about the next day?\nOh! Nothing here. Try the day after?\nSorry. There's nothing happening. To help us improve can you answer this one question?",
-        'NoEventsFormURL' => 'https://docs.google.com/forms/d/1ynqtBbWCiq0SAC_cQk1wpmg2v3tu3pdys25ACxMy0eI/'
+        'NoEventsFormURL' => 'https://docs.google.com/forms/d/1ynqtBbWCiq0SAC_cQk1wpmg2v3tu3pdys25ACxMy0eI/',
+
+        'Default_OG_Image_width' => 1200,
+        'Default_OG_Image_height' => 630
     );
 
     public function getCMSFields() {
@@ -84,10 +87,17 @@ class AppConfig extends DataObject {
     }
 
     public function forAPI(){
-        return $this->getBaseAPIFields([
+        $data = $this->getBaseAPIFields([
             'ID',
             'ClassName',
             'Created'
         ]);
+
+        $data['Default_OG_ImageURL'] = $this->Default_OG_Image()->CroppedImage(
+            $this->Default_OG_Image_width,
+            $this->Default_OG_Image_height
+        )->getAbsoluteURL();
+
+        return $data;
     }
 }
