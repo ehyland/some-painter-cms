@@ -1,29 +1,28 @@
 <?php
 class AppConfig extends DataObject {
     private static $db = array(
-        'DefaultSiteTitle' => 'Varchar(255)',
 
+        // General
+        'DefaultSiteTitle' => 'Varchar(255)',
         'DefaultMetaDescription' => 'Text',
         'DefaultMetaKeywords' => 'Text',    // Comma separated list of keywords
 
+        // No Events
         'NoEventsMessages' => 'Text',   // Line separated list of messages
         'NoEventsFormURL' => 'Varchar(255)',
 
         // Facebook Open Graph
-        // https://developers.facebook.com/docs/sharing/opengraph/object-properties
-
-        // Basic
         'Default_OG_Title' => 'Varchar(255)',
         'Default_OG_Description' => 'Varchar(255)',
         'Default_OG_Site_name' => 'Varchar(255)',
-
-        // Other
         'Default_OG_Type' => 'Varchar(255)',
         'Default_OG_Locale' => 'Varchar(255)',
-
-        // Image
         'Default_OG_Image_width' => 'Varchar(255)',
-        'Default_OG_Image_height' => 'Varchar(255)'
+        'Default_OG_Image_height' => 'Varchar(255)',
+
+        // Thank You Messages
+        'ThankYou_Facebook_Share' => 'Varchar(255)',
+        'ThankYou_Twitter_Share' => 'Varchar(255)'
     );
 
     private static $has_one = array(
@@ -65,10 +64,17 @@ class AppConfig extends DataObject {
         );
 
         // No Events Display Settings
-        $fields->addFieldsToTab('Root.NoEventsCopy', array(
+        $fields->addFieldsToTab('Root.UserMessages', array(
+
+            HeaderField::create('NoEventsMessagesHeader', 'No Events'),
             TextareaField::create('NoEventsMessages')
                 ->setDescription('Line separated list of messages. l1=tonights, l2=tomorrow, l3=nextDay, l4=dayAfter'),
-            TextField::create('NoEventsFormURL')->setDescription('Link to external form')
+            TextField::create('NoEventsFormURL')->setDescription('Link to external form'),
+
+            HeaderField::create('ThankYouMessagesHeader', 'Thank You Messages'),
+            TextField::create('NoEventsFormURL')->setDescription('Link to external form'),
+            TextField::create('ThankYou_Facebook_Share', 'Facebook Share'),
+            TextField::create('ThankYou_Twitter_Share', 'Twitter Share')
         ));
 
         return $fields;
