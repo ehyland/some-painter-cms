@@ -17,8 +17,8 @@ class AppConfig extends DataObject {
         'Default_OG_Site_name' => 'Varchar(255)',
         'Default_OG_Type' => 'Varchar(255)',
         'Default_OG_Locale' => 'Varchar(255)',
-        'Default_OG_Image_width' => 'Varchar(255)',
-        'Default_OG_Image_height' => 'Varchar(255)',
+        // 'Default_OG_Image_width' => 'Varchar(255)',
+        // 'Default_OG_Image_height' => 'Varchar(255)',
 
         // Thank You Messages
         'ThankYou_Facebook_Share' => 'Varchar(255)',
