@@ -50,6 +50,9 @@ class AppConfig extends DataObject {
         ));
 
         // OG Setting
+        $fields->addFieldToTab('Root.FacebookOG',
+            LiteralField::create('FacebookOGLink', '<a href="https://developers.facebook.com/docs/sharing/webmasters">https://developers.facebook.com/docs/sharing/webmasters</a>')
+        );
         foreach (self::$db as $key => $type) {
             if (strpos($key, 'Default_OG_') !== 0)
                 continue;
