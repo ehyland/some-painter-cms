@@ -5,12 +5,17 @@ class Event extends DataObject{
         'Title' => 'Varchar(255)',
         'ArtistName' => 'Varchar(255)',
         'StartDate' => 'SS_Datetime',
-        'EndDate' => 'SS_Datetime'
+        'EndDate' => 'SS_Datetime',
+        'IsFeatured' => 'Boolean'
     );
 
     private static $has_one = array(
         'Gallery' => 'Gallery',
         'GoogleCalendarEvent' => 'GoogleCalendarEvent'
+    );
+
+    private static $defaults = array(
+        'IsFeatured' => false
     );
 
     public function getCMSFields() {
