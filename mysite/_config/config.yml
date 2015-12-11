@@ -5,6 +5,12 @@ After:
   - 'cms/*'
 ---
 
+Injector:
+  RequestProcessor:
+    properties:
+      filters:
+        - '%$DestroyCache_RequestFilter'
+
 SSViewer:
   theme: 'openings'
 
@@ -17,7 +23,13 @@ DataObject:
     - DataObjectExtension_APIFields
     - DataObjectExtension_DataAdmin
 
+AppConfig:
+  extensions:
+    - DestroyCache_DataObjectExtension
+
 Event:
+  extensions:
+    - DestroyCache_DataObjectExtension
   summary_fields:
     'Title': 'Title'
     'ArtistName': 'Artist'
@@ -25,6 +37,8 @@ Event:
     'StartDate.Nice': 'Start'
 
 Gallery:
+  extensions:
+    - DestroyCache_DataObjectExtension
   summary_fields:
     'Title': 'Title'
     'Events.Count': 'Events'
@@ -33,6 +47,8 @@ Gallery:
     'Location.PostalCode': 'PostalCode'
 
 Location:
+  extensions:
+    - DestroyCache_DataObjectExtension
   summary_fields:
     'StreetNumber': 'StreetNumber'
     'Route': 'Route'
