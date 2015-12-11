@@ -32,7 +32,7 @@ class DestroyCache_RequestFilter implements RequestFilter {
    private function destroyJSONCahces () {
        $cacheNames = [JSONController::EVENTS_CACHE_NAME, JSONController::CONFIG_CACHE_NAME];
        foreach ($cacheNames as $cacheName) {
-           $cache = SS_Cache::factory($cacheName)->clean(Zend_Cache::CLEANING_MODE_ALL);
+           SS_Cache::factory($cacheName)->clean(Zend_Cache::CLEANING_MODE_ALL);
        }
    }
 }
