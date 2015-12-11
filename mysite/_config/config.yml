@@ -35,6 +35,7 @@ Event:
     'ArtistName': 'Artist'
     'Gallery.Title': 'Gallery'
     'StartDate.Nice': 'Start'
+    'IsFeatured.Nice': 'Featured'
 
 Gallery:
   extensions:
