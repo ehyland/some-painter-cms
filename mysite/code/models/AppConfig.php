@@ -14,7 +14,6 @@ class AppConfig extends DataObject {
         // Facebook Open Graph
         'Default_OG_Title' => 'Varchar(255)',
         'Default_OG_Description' => 'Varchar(255)',
-        'Default_OG_Site_name' => 'Varchar(255)',
         'Default_OG_Type' => 'Varchar(255)',
         'Default_OG_Locale' => 'Varchar(255)',
         'Default_OG_Image_width' => 'Int',
@@ -93,10 +92,10 @@ class AppConfig extends DataObject {
             'Created'
         ]);
 
-        $data['Default_OG_Image'] = 'http://cms.somepainter.com' . $this->OpenGraphDefaultImage()->CroppedImage(
+        $data['Default_OG_Image'] = $this->OpenGraphDefaultImage()->CroppedImage(
             $this->Default_OG_Image_width,
             $this->Default_OG_Image_height
-        )->getURL();
+        )->getAbsoluteURL();
 
         return $data;
     }
