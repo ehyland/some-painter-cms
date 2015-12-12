@@ -1,6 +1,7 @@
 <?php
 /**
- *
+ *  Example data
+ *  https://maps.googleapis.com/maps/api/geocode/json?address=94+brunswick+rd,+Brunswick,+Victoria+3056,+Australia
  */
 class GoogleGeocodingUtil extends GoogleServiceUtil{
 

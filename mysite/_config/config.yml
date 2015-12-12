@@ -44,7 +44,7 @@ Gallery:
     'Title': 'Title'
     'Events.Count': 'Events'
     'Location.FormattedAddress': 'Address'
-    'Location.City': 'Suburb'
+    'Location.Locality': 'Locality'
     'Location.PostalCode': 'PostalCode'
 
 Location:

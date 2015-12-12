@@ -20,90 +20,34 @@ class UpdateEventsTask extends BuildTask {
 
     public function processCalendarData(){
         $rawData = GoogleCalenderUtil::create()->getEvents();
-        $formattedData = array();
 
-        $total = count($rawData['items']);
+        if (!$rawData) {
+            $this->log("Error fetching google calendar events");
+            return;
+        }
+
+        $calEventsData = $rawData['items'];
+        $total = count($calEventsData);
         $count = 0;
 
         $this->log("$total events to processed");
 
-        foreach ($rawData['items'] as $eventData) {
+        foreach ($calEventsData as $calEventData) {
+            $count++;
 
-            // Get data
-            $derivedData = $this->getDerivedData($eventData);
-            $locationData = array_key_exists('location', $eventData) ?
-            $this->getLocationData($eventData['location']) : array();
+            $gcEvent = GoogleCalendarEvent::create_or_update($calEventData);
 
-            $data = array(
-                'derived' => $derivedData,
-                'calendar' => $eventData,
-                'location' => $locationData
-            );
-
-            // Create or update GoogleCalendarEvent
-            $googleCalendarEventID = GoogleCalendarEvent::create_or_update_with_calendar_data($data);
-            $data['GoogleCalendarEventID'] = $googleCalendarEventID;
-
-            // Create or update Event
-            $eventID = Event::create_or_update_with_calendar_data($data);
-            $data['EventID'] = $eventID;
-
-            // Create or update Location
-            $locationID = Location::create_or_update_with_google_data($data);
-            $data['LocationID'] = $locationID;
-
-            // Get or create gallery
-            $galleryID = Gallery::create_or_update_with_google_data($data);
-            $data['GalleryID'] = $galleryID;
-
-            $this->log(++$count . "/$total");
-        }
-    }
-
-    public function getDerivedData($rawData){
-        $data = array(
-            'GalleryName' => '',
-            'ArtistName' => '',
-            'StartDate' => '',
-            'EndDate' => ''
-        );
-
-        // Dates
-        $data['StartDate'] = $rawData['start']['dateTime'];
-        $data['EndDate'] = $rawData['end']['dateTime'];
-
-        // Set GalleryName & ArtistName
-        $summary = trim($rawData['summary']);
-        if (is_string($summary) && strlen($summary)) {
-            $summary_parts = explode(' - ', $summary);
-
-            // If summary in expected format
-            if (count($summary_parts) === 2) {
-                $data['GalleryName'] = $summary_parts[0];
-                $data['ArtistName'] = $summary_parts[1];
+            if ($gcEvent->EventID) {
+                // Update existing
+                $action = "Updated";
+                $event = $gcEvent->updateExistingEvent();
+            }else{
+                // Create new
+                $action = "Created";
+                $event = $gcEvent->createNewEvent();
             }
+
+            $this->log("$count/$total :: $action event $event->Title ($event->ID)");
         }
-
-        return $data;
-    }
-
-    public function getLocationData($queryString){
-        $queryString = trim($queryString);
-
-        // Add focus address to melbourne australia
-        if (stripos($queryString, 'australia') === FALSE) {
-            if (stripos($queryString, 'melbourne') === FALSE) {
-                $queryString .= ' Melbourne';
-            }
-            $queryString .= ' Australia';
-        }
-
-        $data = GoogleGeocodingUtil::create()->get($queryString);
-
-        if (!is_array($data)) {
-            $data = array();
-        }
-
-        return $data;
     }
 }
