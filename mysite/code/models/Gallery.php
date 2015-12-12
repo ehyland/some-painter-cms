@@ -26,27 +26,6 @@ class Gallery extends DataObject{
         return $fields;
     }
 
-    public static function create_or_update_with_google_data($data){
-        $locationID = $data['LocationID'];
-
-        if ($locationID > 0 && $location = Location::get()->byID($locationID)) {
-            $gallery = $location->Gallery();
-            if(!$gallery->exists()){
-                $gallery = Gallery::create()->update(array(
-                    'Title' => $data['derived']['GalleryName'],
-                    'LocationID' => $locationID
-                ));
-                $gallery->write();
-            }
-
-            $gallery->getComponents('Events')->add($data['EventID']);
-
-            return $gallery->ID;
-        }else{
-            return 0;
-        }
-    }
-
     public function forAPI(){
         $data = $this->getBaseAPIFields(array(
             'Events',

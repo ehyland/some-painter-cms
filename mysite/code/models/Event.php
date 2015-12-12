@@ -10,8 +10,11 @@ class Event extends DataObject{
     );
 
     private static $has_one = array(
-        'Gallery' => 'Gallery',
-        'GoogleCalendarEvent' => 'GoogleCalendarEvent'
+        'Gallery' => 'Gallery'
+    );
+
+    private static $belong_to = array(
+        'EventSource' => 'EventSource'
     );
 
     private static $defaults = array(
@@ -21,7 +24,7 @@ class Event extends DataObject{
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $fields->removeByName('GoogleCalendarEventID');
+        $fields->removeByName('EventSource');
 
         // Add edit gallery link
         if ($this->GalleryID) {
@@ -30,23 +33,6 @@ class Event extends DataObject{
         }
 
         return $fields;
-    }
-
-    public static function create_or_update_with_calendar_data($data){
-
-        // Build update map
-        $update = $data['derived'];
-        $update['GoogleCalendarEventID'] = $data['GoogleCalendarEventID'];
-        $update['Title'] = $data['calendar']['summary'];
-
-        // Get or create event
-        $filter = array('GoogleCalendarEventID' => $data['GoogleCalendarEventID']);
-        if (!$event = self::get()->filter($filter)->first()) {
-            $event = self::create();
-        }
-
-        // Update event
-        return $event->update($update)->write();
     }
 
     public function forAPI(){

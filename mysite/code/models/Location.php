@@ -4,87 +4,90 @@ class Location extends DataObject{
     private static $db = array(
         'StreetNumber' => 'Varchar(255)',
         'Route' => 'Varchar(255)',
-        'Suburb' => 'Varchar(255)',
+        'Locality' => 'Varchar(255)',
         'State' => 'Varchar(255)',
         'Country' => 'Varchar(255)',
         'PostalCode' => 'Varchar(255)',
         'Latitude' => 'Varchar(255)',
         'Longitude' => 'Varchar(255)',
+        'LocationType' => 'Varchar(255)',
         'PlaceID' => 'Varchar(255)',
-        'PartialMatch' => 'Boolean'
+        'PartialMatch' => 'Boolean',
+        'Types' => 'Varchar(255)'
     );
 
-    private static $belongs_to = array(
-        'Gallery' => 'Gallery.Location'
+    private static $google_component_type_map = array(
+        'street_number' => 'StreetNumber',
+        'route' => 'Route',
+        'locality' => 'Locality',
+        'administrative_area_level_1' => 'State',
+        'country' => 'Country',
+        'postal_code' => 'PostalCode'
     );
 
     public function getTitle() {
         return $this->getFormattedAddress();
     }
 
-    public static $address_components_map = array(
-        'street_number' => 'StreetNumber',
-        'route' => 'Route',
-        'locality' => 'Suburb',
-        'administrative_area_level_1' => 'State',
-        'country' => 'Country',
-        'postal_code' => 'PostalCode'
-    );
+    function getFormattedAddress(){
+        return "$this->StreetNumber $this->Route $this->Locality $this->State $this->Country $this->PostalCode";
+    }
 
-    public static function create_or_update_with_google_data($data){
-        $locationData = $data['location'];
-        $update = array();
+    /**
+     * Create a new location object from a search string
+     */
+    public static function create_from_string ($queryString, $melbFocus = true, $ausFocus = true) {
+        $googleData = self::get_google_location_data_from_string($queryString, $melbFocus, $ausFocus);
+        if (!$googleData) return null;
 
-        if (!array_key_exists('place_id', $locationData)) {
-            return 0;
-        }
-
-        // Find or create location
-        $location = Location::get()->filter('PlaceID', $locationData['place_id'])->first();
-        if (!$location) {
-            $location = Location::create();
-        }
-
-        // Add address components to update
-        $componentsExist = (
-            array_key_exists('address_components', $locationData) &&
-            is_array($locationData['address_components'])
+        // Get 1:1 values
+        $data = array(
+            'Latitude' => $googleData['geometry']['location']['lat'],
+            'Longitude' => $googleData['geometry']['location']['lng'],
+            'LocationType' => $googleData['geometry']['location_type'],
+            'PlaceID' => $googleData['place_id'],
+            'PartialMatch' => (array_key_exists('partial_match', $googleData) && $googleData['partial_match']),
+            'Types' => implode(',', $googleData['types'])
         );
-        if ($componentsExist){
-            foreach ($locationData['address_components'] as $component) {
-                foreach ($component['types'] as $type) {
-                    if (isset(self::$address_components_map[$type])) {
-                        $field = self::$address_components_map[$type];
-                        $update[$field] = $component['short_name'];
-                    }
+
+        // Extract data from components
+        foreach ($googleData['address_components'] as $component) {
+            foreach ($component['types'] as $type) {
+                if (isset(self::$google_component_type_map[$type])) {
+                    $data[self::$google_component_type_map[$type]] = $component['short_name'];
                 }
             }
         }
 
-        // Confirm match is in australia
-        if (!array_key_exists('Country', $update) || $update['Country'] !== 'AU') {
-            return 0;
+        // Create location object
+        return self::create()->update($data);
+    }
+
+    /**
+     * Fetch location data using google geocoding api
+     */
+    public static function get_google_location_data_from_string ($queryString, $melbFocus = true, $ausFocus = true) {
+        $queryString = trim($queryString);
+
+        // Confirm address supplied
+        if (!is_string($queryString) || !strlen($queryString)) {
+            return null;
         }
 
-        // Add other details
-        $partialMatch = (
-            array_key_exists('partial_match', $locationData)
-            && $locationData['partial_match']
-        );
-        $update['PartialMatch'] = $partialMatch;
-        $update['Latitude'] = $locationData['geometry']['location']['lat'];
-        $update['Longitude'] = $locationData['geometry']['location']['lng'];
-        $update['PlaceID'] = $locationData['place_id'];
+        // Add focus address to melbourne australia
+        if ($ausFocus && stripos($queryString, 'australia') === FALSE) {
+            if ($melbFocus && stripos($queryString, 'melbourne') === FALSE) {
+                $queryString .= ' Melbourne';
+            }
+            $queryString .= ' Australia';
+        }
 
-        $location->update($update)->write();
-
-        return $location->ID;
+        return GoogleGeocodingUtil::create()->get($queryString);
     }
 
-    function getFormattedAddress(){
-        return "$this->StreetNumber $this->Route $this->Suburb $this->State $this->Country $this->PostalCode";
-    }
-
+    /**
+     * Return data for json consumption
+     */
     public function forAPI(){
         return $this->getBaseAPIFields(array(
             'LastEdited',
