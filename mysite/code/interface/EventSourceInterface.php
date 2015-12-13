@@ -2,17 +2,12 @@
 interface EventSourceInterface {
 
     /**
-     * Return Event and Gallery data
-     */
-    public function createModels ();
-
-    /**
      * Create a new event based data in this model
      */
-    public function createNewEvent ();
+    public function createNewEvent ($writeUpdate = true);
 
     /**
      * Update the linked event with data in this model
      */
-    public function updateExistingEvent ();
+    public function updateExistingEvent ($writeUpdate = true);
 }

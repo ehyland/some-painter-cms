@@ -21,12 +21,12 @@ class EventSource extends DataObject {
 
     public function getCMSFields() {
 
-        if ($this->isLocked()) {
-            $fields = FieldList::create(
-                TabSet::create('Root', Tab::create('Main'))
-            );
+        $fields = FieldList::create(
+            TabSet::create('Root', Tab::create('Main'))
+        );
 
-            // Link to event
+        // Link to event
+        if ($this->EventID) {
             $fields->addFieldToTab(
                 'Root.Main',
                 LiteralField::create(
@@ -37,40 +37,27 @@ class EventSource extends DataObject {
                     .'</div>'
                 )
             );
+        }
 
-            // Display readonly fields
+        // Display readonly fields
+        if ($this->isLocked()) {
             foreach ($this->db() as $field => $type) {
                 $fields->addFieldToTab('Root.Main', ReadonlyField::create($field));
             }
-
-            return $fields;
-        }else{
-            return parent::getCMSFields();
+        }else {
+            $fields->addFieldToTab('Root.Main',
+                DropdownField::create(
+                    'State',
+                    'State',
+                     $this->dbObject('State')->enumValues()
+                )
+            );
         }
+
+        return $fields;
     }
 
     protected function validate() {
         return parent::validate();
-    }
-
-    // Creates Event, Gallery and Location models from instance data
-    // models are not save to database
-    public function createModels () {
-        // abstract method
-    }
-
-    // Creats and saves a new event
-    public function createNewEvent () {
-        // abstract method
-    }
-
-    // Updates existing event
-    public function updateExistingEvent () {
-        // abstract method
-    }
-
-    // Updates existing or creates new event
-    public function updateExistingOrCreateEvent () {
-        // abstract method
     }
 }

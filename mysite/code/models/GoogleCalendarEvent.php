@@ -67,7 +67,7 @@ class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
         );
     }
 
-    public function createNewEvent () {
+    public function createNewEvent ($writeUpdate = true) {
         $models = $this->createModels();
         $location = Location::create_from_string($this->location);
 
@@ -102,13 +102,17 @@ class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
         $this->update(array(
             'EventID' => $models['Event']->ID,
             'State' => 'Merged'
-        ))->write();
+        ));
+
+        if ($writeUpdate) {
+            $this->write();
+        }
 
         return $this->Event();
     }
 
     // Update existing Event, Gallery and Location
-    public function updateExistingEvent () {
+    public function updateExistingEvent ($writeUpdate = true) {
         $event = $this->Event();
         $gallery = $event->Gallery();
         $location = $gallery->Location();
@@ -125,7 +129,11 @@ class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
 
         $this->update(array(
             'State' => 'Merged'
-        ))->write();
+        ));
+
+        if ($writeUpdate) {
+            $this->write();
+        }
 
         return $this->Event();
     }
