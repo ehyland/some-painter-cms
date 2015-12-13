@@ -6,7 +6,8 @@
 		"silverstripe/cms": "3.2.1",
 		"silverstripe/framework": "3.2.1",
 		"silverstripe/siteconfig": "3.2.1",
-		"littlegiant/silverstripe-singleobjectadmin": "^1.0"
+		"littlegiant/silverstripe-singleobjectadmin": "^1.0",
+		"sheadawson/quickaddnew": "^1.1"
 	},
 	"require-dev": {
 		"phpunit/PHPUnit": "~3.7"

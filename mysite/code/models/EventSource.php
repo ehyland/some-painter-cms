@@ -11,7 +11,43 @@ class EventSource extends DataObject {
     private static $belongs_to = array();
     private static $belongs_many_many = array();
 
-    private static $defaults = array();
+    private static $defaults = array(
+        'State' => 'PendingApproval'
+    );
+
+    public function isLocked () {
+        return $this->State === 'Merged' && $this->EventID;
+    }
+
+    public function getCMSFields() {
+
+        if ($this->isLocked()) {
+            $fields = FieldList::create(
+                TabSet::create('Root', Tab::create('Main'))
+            );
+
+            // Link to event
+            $fields->addFieldToTab(
+                'Root.Main',
+                LiteralField::create(
+                    'EventEditLink',
+                    '<div class="field">'
+                        .'<label class="left">Linked Event: </label>'
+                        .$this->Event()->getDataAdminEditAnchorTag()
+                    .'</div>'
+                )
+            );
+
+            // Display readonly fields
+            foreach ($this->db() as $field => $type) {
+                $fields->addFieldToTab('Root.Main', ReadonlyField::create($field));
+            }
+
+            return $fields;
+        }else{
+            return parent::getCMSFields();
+        }
+    }
 
     protected function validate() {
         return parent::validate();

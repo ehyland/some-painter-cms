@@ -1,5 +1,5 @@
 <?php
-class GoogleCalendarEvent extends EventSource {
+class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
     private static $db = array(
         'google_calendar_id' => 'Varchar(255)',
 
@@ -100,7 +100,8 @@ class GoogleCalendarEvent extends EventSource {
 
         // Link event
         $this->update(array(
-            "EventID" => $models['Event']->ID
+            'EventID' => $models['Event']->ID,
+            'State' => 'Merged'
         ))->write();
 
         return $this->Event();
@@ -120,6 +121,10 @@ class GoogleCalendarEvent extends EventSource {
             'StartDate' => $updateModels['Event']->StartDate,
             'EndDate' => $updateModels['Event']->EndDate,
             'IsFeatured' => $updateModels['Event']->IsFeatured
+        ))->write();
+
+        $this->update(array(
+            'State' => 'Merged'
         ))->write();
 
         return $this->Event();

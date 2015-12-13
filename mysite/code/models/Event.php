@@ -6,7 +6,8 @@ class Event extends DataObject{
         'ArtistName' => 'Varchar(255)',
         'StartDate' => 'SS_Datetime',
         'EndDate' => 'SS_Datetime',
-        'IsFeatured' => 'Boolean'
+        'IsFeatured' => 'Boolean',
+        'HasFreeDrinks' => 'Boolean'
     );
 
     private static $has_one = array(

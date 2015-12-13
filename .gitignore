@@ -19,8 +19,8 @@ framework/
 reports/
 siteconfig/
 silverstripe-singleobjectadmin/
+quickaddnew/
 vendor/
-node_modules/
 
 # Sensitive Files
 _ss_environment.php
