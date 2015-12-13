@@ -21,7 +21,11 @@ class AppConfig extends DataObject {
 
         // Thank You Messages
         'ThankYou_Facebook_Share' => 'Varchar(255)',
-        'ThankYou_Twitter_Share' => 'Varchar(255)'
+        'ThankYou_Twitter_Share' => 'Varchar(255)',
+
+        // Share copy
+        'Twitter_Share_Text' => 'Varchar(255)',
+        'Twitter_Share_HashTags' => 'Varchar(255)'
     );
 
     private static $has_one = array(
@@ -79,7 +83,12 @@ class AppConfig extends DataObject {
             HeaderField::create('ThankYouMessagesHeader', 'Thank You Messages'),
             TextField::create('NoEventsFormURL')->setDescription('Link to external form'),
             TextField::create('ThankYou_Facebook_Share', 'Facebook Share'),
-            TextField::create('ThankYou_Twitter_Share', 'Twitter Share')
+            TextField::create('ThankYou_Twitter_Share', 'Twitter Share'),
+
+            HeaderField::create('TwitterShareCopyHeader', 'Twitter Share Copy'),
+            TextField::create('Twitter_Share_Text', 'Twitter Share Text'),
+            TextField::create('Twitter_Share_HashTags', 'Twitter Share HashTags')
+                ->setDescription('e.g. melbourne,artgalleryopenings')
         ));
 
         return $fields;
