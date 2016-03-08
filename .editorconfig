@@ -8,22 +8,13 @@ root = true
 charset = utf-8
 end_of_line = lf
 indent_size = 4
-indent_style = spaces
+indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.md]
 trim_trailing_whitespace = false
 
-[*.php]
-indent_size = 4
-
-[{*.yml,*.js}]
-indent_size = 2
-indent_style = space
-
-[{.travis.yml,package.json}]
-# The indent size used in the `package.json` file cannot be changed
-# https://github.com/npm/npm/pull/3180#issuecomment-16336516
+[{*.yml,*.js,*.json}]
 indent_size = 2
 indent_style = space

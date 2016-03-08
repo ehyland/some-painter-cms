@@ -2,28 +2,19 @@
 class FormsController extends JSONController{
 
     private static $allowed_actions = array(
-        'EventSubmissionForm'
+        'newEventAction'
     );
 
-    public function EventSubmissionForm(SS_HTTPRequest $request) {
+    private static $url_handlers = array(
+        'new-event' => 'newEventAction'
+    );
 
-        $fields = FieldList::create(array(
-            TextField::create('UserSubmittedGallery'),
-            TextField::create('UserSubmittedArtistName'),
-            DatetimeField::create('UserSubmittedStartDate'),
-            CheckboxField::create('UserSubmittedHasFreeDrinks')
-        ));
+    public function newEventAction(SS_HTTPRequest $request) {
 
-        $actions = FieldList::create();
+        $data = json_decode($request->getBody(), true);
 
-        $validator = RequiredFields::create(array(
-            'UserSubmittedGallery',
-            'UserSubmittedArtistName',
-            'UserSubmittedStartDate'
-        ));
-
-        $eventForm = Form::create($this, __FUNCTION__, $fields, $actions, $validator);
-        $eventForm->loadDataFrom($_REQUEST);
+        $eventForm = new NewEventForm($this, __FUNCTION__);
+        $eventForm->loadDataFrom($data);
 
         if ($eventForm->validate()) {
             // Valid
@@ -36,7 +27,8 @@ class FormsController extends JSONController{
             return $this->sendResponse(array(
                 'success' => true
             ));
-        }else{
+        }
+        else {
             // Invalid
             $errors = $eventForm->getValidator()->getErrors();
             return $this->sendResponse(array(
