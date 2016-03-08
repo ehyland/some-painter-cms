@@ -18,6 +18,10 @@ Date:
   extensions:
     - DateExtension
 
+DateField:
+  default_config:
+    'showcalendar': true
+
 DataObject:
   extensions:
     - DataObjectExtension_APIFields
@@ -67,4 +71,4 @@ EventSource:
     'ClassName': 'ClassName'
     'State': 'State'
     'Created': 'Created'
-    'LastEdited': 'LastEdited' 
+    'LastEdited': 'LastEdited'

@@ -17,11 +17,20 @@ class Gallery extends DataObject{
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        // Add edit location link
+        // galleries field
+        $locations = function() {
+            return Location::get()->map('ID', 'Title');
+        };
+        $locationField = DropdownField::create('LocationID', 'Location', $locations());
+        $locationField->useAddNew('Location', $locations);
         if ($this->LocationID) {
-            $fields->dataFieldByName('LocationID')
-                ->setDescription($this->Location()->getDataAdminEditAnchorTag());
+            $locationField->setDescription($this->Location()->getDataAdminEditAnchorTag());
         }
+
+        // add fields to tab
+        $fields->addFieldsToTab('Root.Main', array(
+            $locationField
+        ));
 
         return $fields;
     }
