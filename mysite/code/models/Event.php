@@ -6,7 +6,8 @@ class Event extends DataObject{
         'ArtistName' => 'Varchar(255)',
         'StartDate' => 'SS_Datetime',
         'EndDate' => 'SS_Datetime',
-        'IsFeatured' => 'Boolean'
+        'IsFeatured' => 'Boolean',
+        'HasFreeDrinks' => 'Boolean'
     );
 
     private static $has_one = array(
@@ -26,11 +27,20 @@ class Event extends DataObject{
 
         $fields->removeByName('EventSource');
 
-        // Add edit gallery link
+        // galleries field
+        $galleries = function() {
+            return Gallery::get()->map('ID', 'Title');
+        };
+        $galleryField = DropdownField::create('GalleryID', 'Gallery', $galleries());
+        $galleryField->useAddNew('Gallery', $galleries);
         if ($this->GalleryID) {
-            $fields->dataFieldByName('GalleryID')
-                ->setDescription($this->Gallery()->getDataAdminEditAnchorTag());
+            $galleryField->setDescription($this->Gallery()->getDataAdminEditAnchorTag());
         }
+
+        // add fields to tab
+        $fields->addFieldsToTab('Root.Main', array(
+            $galleryField
+        ));
 
         return $fields;
     }

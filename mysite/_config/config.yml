@@ -18,6 +18,10 @@ Date:
   extensions:
     - DateExtension
 
+DateField:
+  default_config:
+    'showcalendar': true
+
 DataObject:
   extensions:
     - DataObjectExtension_APIFields
@@ -62,10 +66,9 @@ Location:
     'PlaceID': 'PlaceID'
     'PartialMatch': 'PartialMatch'
 
-GoogleCalendarEvent:
+EventSource:
   summary_fields:
-    'google_calendar_id': 'google_calendar_id'
-    'updated': 'updated'
-    'summary': 'summary'
-    'start_dateTime': 'start_dateTime'
-    'end_dateTime': 'end_dateTime'
+    'ClassName': 'ClassName'
+    'State': 'State'
+    'Created': 'Created'
+    'LastEdited': 'LastEdited'

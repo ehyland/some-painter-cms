@@ -6,6 +6,7 @@ class DataAdmin extends ModelAdmin {
         'Gallery',
         'Location',
         'GoogleCalendarEvent',
+        'UserSubmittedEvent'
     );
 
     private static $url_segment = 'events';

@@ -1,5 +1,5 @@
 <?php
-class GoogleCalendarEvent extends EventSource {
+class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
     private static $db = array(
         'google_calendar_id' => 'Varchar(255)',
 
@@ -67,7 +67,7 @@ class GoogleCalendarEvent extends EventSource {
         );
     }
 
-    public function createNewEvent () {
+    public function createNewEvent ($writeUpdate = true) {
         $models = $this->createModels();
         $location = Location::create_from_string($this->location);
 
@@ -100,14 +100,19 @@ class GoogleCalendarEvent extends EventSource {
 
         // Link event
         $this->update(array(
-            "EventID" => $models['Event']->ID
-        ))->write();
+            'EventID' => $models['Event']->ID,
+            'State' => 'Merged'
+        ));
+
+        if ($writeUpdate) {
+            $this->write();
+        }
 
         return $this->Event();
     }
 
     // Update existing Event, Gallery and Location
-    public function updateExistingEvent () {
+    public function updateExistingEvent ($writeUpdate = true) {
         $event = $this->Event();
         $gallery = $event->Gallery();
         $location = $gallery->Location();
@@ -121,6 +126,14 @@ class GoogleCalendarEvent extends EventSource {
             'EndDate' => $updateModels['Event']->EndDate,
             'IsFeatured' => $updateModels['Event']->IsFeatured
         ))->write();
+
+        $this->update(array(
+            'State' => 'Merged'
+        ));
+
+        if ($writeUpdate) {
+            $this->write();
+        }
 
         return $this->Event();
     }
