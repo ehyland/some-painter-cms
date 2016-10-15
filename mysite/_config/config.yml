@@ -5,6 +5,9 @@ After:
   - 'cms/*'
 ---
 
+AdminRootController:
+  default_panel: 'AppConfigAdmin'
+
 Injector:
   RequestProcessor:
     properties:
