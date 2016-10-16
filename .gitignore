@@ -21,7 +21,3 @@ siteconfig/
 silverstripe-singleobjectadmin/
 quickaddnew/
 vendor/
-
-# Sensitive Files
-_ss_environment.php
-mysite/_config/keys.yml

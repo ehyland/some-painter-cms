@@ -101,10 +101,13 @@ class AppConfig extends DataObject {
             'Created'
         ]);
 
-        $data['Default_OG_Image'] = $this->OpenGraphDefaultImage()->CroppedImage(
-            $this->Default_OG_Image_width,
-            $this->Default_OG_Image_height
-        )->getAbsoluteURL();
+        $ogImage = $this->OpenGraphDefaultImage();
+        if (is_object($ogImage) && $ogImage->ID) {
+            $data['Default_OG_Image'] = $this->OpenGraphDefaultImage()->CroppedImage(
+                $this->Default_OG_Image_width,
+                $this->Default_OG_Image_height
+            )->getAbsoluteURL();
+        }
 
         return $data;
     }

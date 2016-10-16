@@ -7,7 +7,7 @@ class GoogleCalenderUtil extends GoogleServiceUtil{
   public function getEvents($calendarId = 'charles.artopenings@gmail.com', $options = array()){
 
     $detaults = array(
-      'key' => self::get_key(),
+      'key' => $_ENV['GOOGLE_API_KEY'],
       'maxResults' => 1000,
       'singleEvents' => 'true',
       'orderBy' => 'startTime',

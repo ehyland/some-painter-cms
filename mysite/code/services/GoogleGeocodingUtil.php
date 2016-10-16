@@ -10,7 +10,7 @@ class GoogleGeocodingUtil extends GoogleServiceUtil{
   public function get($address){
     $query = array(
       'address' => $address,
-      'key' => self::get_key()
+      'key' => $_ENV['GOOGLE_API_KEY']
     );
 
     $service = new RestfulService(self::BASE_URL, 60);
