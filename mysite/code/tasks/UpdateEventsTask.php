@@ -41,13 +41,19 @@ class UpdateEventsTask extends BuildTask {
                 // Update existing
                 $action = "Updated";
                 $event = $gcEvent->updateExistingEvent();
-            }else{
+            }
+            else {
                 // Create new
                 $action = "Created";
                 $event = $gcEvent->createNewEvent();
             }
 
-            $this->log("$count/$total :: $action event $event->Title ($event->ID)");
+            if (!$event) {
+                $this->log("$count/$total :: $action event FAILED");
+            }
+            else {
+                $this->log("$count/$total :: $action event $event->Title ($event->ID)");
+            }
         }
     }
 }

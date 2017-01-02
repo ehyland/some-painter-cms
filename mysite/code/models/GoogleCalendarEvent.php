@@ -83,7 +83,9 @@ class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
             $location = $existingGallery->Location();
             $models['Gallery'] = $existingGallery;
         }
-        else {
+
+        // If location, create new gallery
+        elseif ($location) {
             // Write location to database
             $location->write();
 
@@ -91,6 +93,11 @@ class GoogleCalendarEvent extends EventSource implements EventSourceInterface{
             $models['Gallery']->update(array(
                 'LocationID' => $location->ID
             ))->write();
+        }
+
+        // else do not create event
+        else {
+            return null;
         }
 
         // Write event to database
