@@ -1,14 +1,14 @@
 <?php
 
 /* environment */
-define('SS_ENVIRONMENT_TYPE', 'live');
+define('SS_ENVIRONMENT_TYPE', $_ENV['SS_ENVIRONMENT_TYPE']);
 
 /* database */
 define('SS_DATABASE_CLASS', 'MySQLPDODatabase');
-define('SS_DATABASE_SERVER', 'mariadb');
-define('SS_DATABASE_NAME', $_ENV['MYSQL_DATABASE']);
-define('SS_DATABASE_USERNAME', $_ENV['MYSQL_USER']);
-define('SS_DATABASE_PASSWORD', $_ENV['MYSQL_PASSWORD']);
+define('SS_DATABASE_SERVER', $_ENV['SS_DATABASE_SERVER']);
+define('SS_DATABASE_NAME', $_ENV['SS_DATABASE_NAME']);
+define('SS_DATABASE_USERNAME', $_ENV['SS_DATABASE_USERNAME']);
+define('SS_DATABASE_PASSWORD', $_ENV['SS_DATABASE_PASSWORD']);
 
 define('SS_ERROR_LOG', 'silverstripe.log');
 
