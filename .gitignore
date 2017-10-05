@@ -12,6 +12,8 @@ silverstripe-cache
 composer.lock
 /*.log
 /*.zip
+/.env
+/logs
 
 # Modules
 cms/

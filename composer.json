@@ -1,21 +1,26 @@
 {
-	"name": "Some Painter CMS",
-	"description": "CMS for somepainter.com",
-	"require": {
-		"php": ">=5.3.3",
-		"silverstripe/cms": "3.4.1",
-		"silverstripe/framework": "3.4.1",
-		"silverstripe/reports": "3.4.1",
-		"silverstripe/siteconfig": "3.4.1",
-		"littlegiant/silverstripe-singleobjectadmin": "^1.1",
-		"sheadawson/quickaddnew": "^1.1.3"
-	},
-	"require-dev": {
-		"phpunit/PHPUnit": "~3.7"
-	},
-	"config": {
-		"process-timeout": 600
-	},
-	"prefer-stable": true,
-	"minimum-stability": "dev"
+  "name": "Some Painter CMS",
+  "description": "CMS for somepainter.com",
+  "require": {
+    "php": ">=5.3.3",
+    "silverstripe/cms": "3.6.2",
+    "silverstripe/framework": "3.6.2",
+    "silverstripe/reports": "3.6.2",
+    "silverstripe/siteconfig": "3.6.2",
+    "littlegiant/silverstripe-singleobjectadmin": "^1.1",
+    "sheadawson/quickaddnew": "^1.1.3"
+  },
+  "require-dev": {
+    "phpunit/PHPUnit": "~3.7@stable"
+  },
+  "extra": {
+    "branch-alias": {
+      "3.x-dev": "3.6.x-dev"
+    }
+  },
+  "config": {
+    "process-timeout": 600
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
 }
