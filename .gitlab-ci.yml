@@ -32,4 +32,4 @@ deploy:
     - docker push $IMAGE_NAME:production
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | ssh-add -
-    - ssh -o StrictHostKeyChecking=no eamon@eamon.sh "~/eamon.sh-server/scripts/remote/update.sh"
+    - ssh -o StrictHostKeyChecking=no eamon@eamon.sh "sh ~/eamon.sh-server/scripts/remote/update.sh"
