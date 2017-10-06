@@ -26,6 +26,9 @@ deploy:
   stage: deploy
   only:
     - master
+  environment:
+    name: production
+    url: https://cms.somepainter.com
   script:
     - docker pull $IMAGE_NAME:$CI_COMMIT_SHA
     - docker tag $IMAGE_NAME:$CI_COMMIT_SHA $IMAGE_NAME:production
