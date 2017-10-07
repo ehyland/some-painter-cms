@@ -1,0 +1,10 @@
+/.git
+/assets
+/logs
+/cms
+/framework
+/reports
+/siteconfig
+/silverstripe-singleobjectadmin
+/quickaddnew
+/vendor
