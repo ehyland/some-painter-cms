@@ -5,3 +5,5 @@ COPY . /site
 WORKDIR /site
 
 RUN composer install
+
+CMD ["/site/scripts/docker-entry.sh"]

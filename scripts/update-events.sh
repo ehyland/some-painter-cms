@@ -2,4 +2,4 @@
 
 cd "$(dirname $0)/.."
 
-./framework/sake dev/tasks/UpdateEventsTask | tee -a ./logs/update-events.log
+./framework/sake dev/tasks/UpdateEventsTask "flush=1" | tee -a ./logs/update-events.log
